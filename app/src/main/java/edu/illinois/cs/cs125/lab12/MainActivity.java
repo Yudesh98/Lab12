@@ -3,6 +3,10 @@ package edu.illinois.cs.cs125.lab12;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +25,11 @@ public final class MainActivity extends AppCompatActivity {
     /** Default logging tag for messages from the main activity. */
     private static final String TAG = "Lab12:Main";
 
+    /** blah */
+
+
+    /** blahahaejfgba */
+    private String jsonText = "";
     /** Request queue for our API requests. */
     private static RequestQueue requestQueue;
 
@@ -38,7 +47,19 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        startAPICall();
+        final TextView textView = findViewById(R.id.textView);
+
+        final Button caller = findViewById(R.id.button1);
+        caller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Log.d(TAG, "Call button clicked");
+                startAPICall();
+                textView.setText(jsonText);
+            }
+        });
+
+
     }
 
     /**
@@ -57,13 +78,15 @@ public final class MainActivity extends AppCompatActivity {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
                     "http://api.openweathermap.org/data/2.5/weather?zip=61820,us&appid="
-                            + BuildConfig.API_KEY,
+                            + "c84c2e607b0d9579ad7291e427496bec",
                     null,
+
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(final JSONObject response) {
                             try {
                                 Log.d(TAG, response.toString(2));
+                                jsonText = response.toString(2);
                             } catch (JSONException ignored) { }
                         }
                     }, new Response.ErrorListener() {
